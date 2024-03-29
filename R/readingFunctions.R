@@ -69,6 +69,12 @@ read_rangeData <- function(data, assembly, chrom = NULL,
         }
         
         
+    } else if (type == "GWAS") {
+        
+        ## Rename chrom and position columns
+        colnames(data)[seq(1, 2)] <- c("chrom", "pos")
+        ## column data types will be checked in plotManhattan errorchecks
+        
     }
     
     return(data)

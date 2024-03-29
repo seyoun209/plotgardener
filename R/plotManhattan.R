@@ -10,7 +10,7 @@
 #'     fill = "black",
 #'     pch = 19,
 #'     cex = 0.25,
-#'     leadSNP = NULL,
+#'     snpHighlights = NULL,
 #'     sigLine = FALSE,
 #'     sigCol = NULL,
 #'     trans = "-log10",
@@ -67,12 +67,10 @@
 #' \code{colorby} values. Default value is \code{pch = 19}.
 #' @param cex A numeric indicating the amount by which points should be
 #' scaled relative to the default. Default value is \code{cex = 0.25}.
-#' @param leadSNP A list specifying the lead SNP in the desired region and
-#' any associated aesthetic features of the lead SNP data point and text label.
-#' The lead SNP should be specified as a character with the name slot
-#' \code{"snp"} in the list. Accepted lead SNP aesthetic
-#' features in the list include
-#' \code{fill}, \code{pch}, \code{cex}, \code{fontcolor}, and \code{fontsize}.
+#' @param snpHighlights A dataframe specifying SNP points with different
+#' aesthetics. The SNPs should be specified as a column named "snp" to
+#' match input data. Other columns can include the aesthetic features
+#' \code{fill}, \code{col}, \code{pch}, and \code{pch}.
 #' @param sigLine Logical value indicating whether to draw a line at the
 #' significance level indicated with \code{sigVal}.
 #' Default value is \code{sigLine = FALSE}.
@@ -196,12 +194,11 @@
 #'     trans = "-log10",
 #'     sigLine = TRUE, col = "grey",
 #'     lty = 2, range = c(0, 16),
-#'     leadSNP = list(
+#'     leadSNP = data.frame(
 #'         snp = leadSNP,
 #'         pch = 18,
 #'         cex = 0.75,
-#'         fill = "#7ecdbb",
-#'         fontsize = 8
+#'         fill = "#7ecdbb"
 #'     ),
 #'     x = 0.5, y = 2.5, width = 6.5,
 #'     height = 1.5,
@@ -296,8 +293,8 @@ plotManhattan <- function(data, sigVal = 5e-08, chrom = NULL,
         if (!"chrom" %in% colnames(bedfile)) {
             stop("\'chrom\' column not found in data.", call. = FALSE)
         } else {
-            if (!is(bedfile$chrom, "character")) {
-                stop("\'chrom\' column must be a character.", call. = FALSE)
+            if (!is(bedfile$chrom, "character") & !is(bedfile$chrom, "factor")) {
+                stop("\'chrom\' column must be a character or factor.", call. = FALSE)
             }
         }
         
@@ -873,7 +870,7 @@ plotManhattan <- function(data, sigVal = 5e-08, chrom = NULL,
                         bed_data, highlightSNPs
                     ))
                 } else if (nrow(highlightSNPs) != nrow(manInternal$snpHighlights)) {
-                    print("here")
+
                     warning("Not all `'snpHighlight'` SNPs found in data.",
                             call. = FALSE)
                 } else {

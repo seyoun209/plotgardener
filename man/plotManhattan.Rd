@@ -14,7 +14,7 @@ plotManhattan(
     fill = "black",
     pch = 19,
     cex = 0.25,
-    leadSNP = NULL,
+    snpHighlights = NULL,
     sigLine = FALSE,
     sigCol = NULL,
     trans = "-log10",
@@ -81,12 +81,10 @@ point symbols will be mapped to
 \item{cex}{A numeric indicating the amount by which points should be
 scaled relative to the default. Default value is \code{cex = 0.25}.}
 
-\item{leadSNP}{A list specifying the lead SNP in the desired region and
-any associated aesthetic features of the lead SNP data point and text label.
-The lead SNP should be specified as a character with the name slot
-\code{"snp"} in the list. Accepted lead SNP aesthetic
-features in the list include
-\code{fill}, \code{pch}, \code{cex}, \code{fontcolor}, and \code{fontsize}.}
+\item{snpHighlights}{A dataframe specifying SNP points with different
+aesthetics. The SNPs should be specified as a column named "snp" to
+match input data. Other columns can include the aesthetic features
+\code{fill}, \code{col}, \code{pch}, and \code{pch}.}
 
 \item{sigLine}{Logical value indicating whether to draw a line at the
 significance level indicated with \code{sigVal}.
@@ -252,12 +250,11 @@ chr11_manhattanPlot <- plotManhattan(
     trans = "-log10",
     sigLine = TRUE, col = "grey",
     lty = 2, range = c(0, 16),
-    leadSNP = list(
+    leadSNP = data.frame(
         snp = leadSNP,
         pch = 18,
         cex = 0.75,
-        fill = "#7ecdbb",
-        fontsize = 8
+        fill = "#7ecdbb"
     ),
     x = 0.5, y = 2.5, width = 6.5,
     height = 1.5,
