@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">plotgardener</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.8.3</span>
       </span>
     </div>
 
@@ -91,14 +91,114 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.4.1" id="changes-in-version-141">CHANGES IN VERSION 1.4.1<a class="anchor" aria-label="anchor" href="#changes-in-version-141"></a></h2>
+<h2 class="page-header" data-toc-text="1.8.3" id="version-183">VERSION 1.8.3<a class="anchor" aria-label="anchor" href="#version-183"></a></h2>
 <div class="section level3">
-<h3 id="bug-fixes-1-4-1">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-4-1"></a></h3>
+<h3 id="bug-fixes-1-8-3">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-8-3"></a></h3>
+<ul><li>
+<code>plotManhattan</code> accommodates <code>GRanges</code> data input.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.8.2" id="version-182">VERSION 1.8.2<a class="anchor" aria-label="anchor" href="#version-182"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-8-2">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-8-2"></a></h3>
+<ul><li>
+<code>plotGenes</code> appropriately handles <code>tibble</code> input for <code>geneHighlights</code>.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.8.1" id="version-181">VERSION 1.8.1<a class="anchor" aria-label="anchor" href="#version-181"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-8-1">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-8-1"></a></h3>
+<ul><li>
+<code>plotManhattan</code> pch mapping is compatible when number of data points is less than the number of levels of a <code>colorby</code> column.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.8.0" id="version-180">VERSION 1.8.0<a class="anchor" aria-label="anchor" href="#version-180"></a></h2>
+<p>Version bump for Bioconductor 3.18 release.</p>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.7.7" id="version-177">VERSION 1.7.7<a class="anchor" aria-label="anchor" href="#version-177"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-7-7">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-7-7"></a></h3>
+<ul><li>
+<code>params</code> parsing removes non-standard chromosomes when identifying gene transcripts</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.7.6" id="version-176">VERSION 1.7.6<a class="anchor" aria-label="anchor" href="#version-176"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-7-6">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-7-6"></a></h3>
+<ul><li>
+<code>colorby</code> logic parsing is patched.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.7.5" id="version-175">VERSION 1.7.5<a class="anchor" aria-label="anchor" href="#version-175"></a></h2>
+<div class="section level3">
+<h3 id="new-features-1-7-5">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-7-5"></a></h3>
+<ul><li>
+<code>plotPairs</code>, <code>plotPairsArches</code>, and <code>plotRanges</code> allow <code>NA</code> fill.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.7.4" id="version-174">VERSION 1.7.4<a class="anchor" aria-label="anchor" href="#version-174"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-7-4">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-7-4"></a></h3>
+<ul><li>Removed extra page creation with <code>annoYaxis</code> <code>axisLine = FALSE</code>.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.7.3" id="version-173">VERSION 1.7.3<a class="anchor" aria-label="anchor" href="#version-173"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-7-3">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-7-3"></a></h3>
+<ul><li>Removed blank page creation with pdf() calls for all major plotting functions.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.7.2" id="version-172">VERSION 1.7.2<a class="anchor" aria-label="anchor" href="#version-172"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-7-2">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-7-2"></a></h3>
+<ul><li>Fixed <code>plotMultiSignal</code> width and height parsing bug.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.7.1" id="changes-in-version-171">CHANGES IN VERSION 1.7.1<a class="anchor" aria-label="anchor" href="#changes-in-version-171"></a></h2>
+<div class="section level3">
+<h3 id="new-features-1-7-1">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-7-1"></a></h3>
+<ul><li>
+<code>plotManhattan</code> y-scales can be reversed for Miami plot-style layouts.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.7.0" id="version-170">VERSION 1.7.0<a class="anchor" aria-label="anchor" href="#version-170"></a></h2>
+<p>Version bump for Bioconductor 3.17 release.</p>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.5.3" id="changes-in-version-153">CHANGES IN VERSION 1.5.3<a class="anchor" aria-label="anchor" href="#changes-in-version-153"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-5-3">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-5-3"></a></h3>
+<ul><li>Fixed page viewport parsing bug fixes related to R version 4.3.0 updates.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.5.2" id="changes-in-version-152">CHANGES IN VERSION 1.5.2<a class="anchor" aria-label="anchor" href="#changes-in-version-152"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-5-2">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-5-2"></a></h3>
+<ul><li>
+<code>annoPixels</code> detects and annotates all pixels for <code>plotHicRectangle</code> plots.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.5.1" id="changes-in-version-151">CHANGES IN VERSION 1.5.1<a class="anchor" aria-label="anchor" href="#changes-in-version-151"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-5-1">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-5-1"></a></h3>
 <ul><li>yscales for <code>plotHicRectangle</code> and <code>plotHicTriangle</code> reflect distance in Hi-C bins.</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.4.0" id="version-140">VERSION 1.4.0<a class="anchor" aria-label="anchor" href="#version-140"></a></h2>
+<h2 class="page-header" data-toc-text="1.5.0" id="version-150">VERSION 1.5.0<a class="anchor" aria-label="anchor" href="#version-150"></a></h2>
 <p>Version bump for Bioconductor 3.16 release.</p>
 </div>
     <div class="section level2">
@@ -361,7 +461,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
