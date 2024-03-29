@@ -291,13 +291,12 @@ plotManhattan <- function(data, sigVal = 5e-08, chrom = NULL,
     errorcheck_plotManhattan <- function(bedfile, chrom, chromstart,
                                             chromend, object,
                                             leadSNP, fill) {
-
         ## check bedfile columns
         if (!"chrom" %in% colnames(bedfile)) {
             stop("\'chrom\' column not found in data.", call. = FALSE)
         } else {
-            if (!is(bedfile$chrom, "character")) {
-                stop("\'chrom\' column must be a character.", call. = FALSE)
+            if (!is(bedfile$chrom, "character") & !is(bedfile$chrom, "factor")) {
+                stop("\'chrom\' column must be a character or factor.", call. = FALSE)
             }
         }
         

@@ -1,3 +1,8 @@
+# VERSION 1.9.4
+## BUG FIXES
+
+* `plotManhattan` accommodates `GRanges` data input.
+
 # VERSION 1.9.3
 ## BUG FIXES
 
