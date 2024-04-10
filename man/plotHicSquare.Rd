@@ -20,6 +20,7 @@ plotHicSquare(
     palette = colorRampPalette(brewer.pal(n = 9, "YlGnBu")),
     colorTrans = "linear",
     half = "both",
+    yaxisDir = "increase",
     bg = NA,
     x = NULL,
     y = NULL,
@@ -96,6 +97,13 @@ Default value is \code{half = "both"}.
 \item{\code{"top"}: }{Half above the diagonal.}
 \item{\code{"bottom"}: }{Half below the diagonal.}
 }}
+
+\item{yaxisDir}{A string specifying the genomic direction of the y-axis.
+Options are \code{"increase"}, where the bottom left corner of the Hi-C map
+indicates the origin, and \code{"decrease"}, where the top left corner of the
+Hi-C map indicates the origin. This will change the direction of the diagonal
+for intrachromosomal maps.
+Default value is \code{yaxisDir = "increase"}.}
 
 \item{bg}{Character value indicating background color.
 Default value is \code{bg = NA}.}
