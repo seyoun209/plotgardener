@@ -1,3 +1,9 @@
+# VERSION 1.9.5
+## NEW FEATURES
+
+* `plotHicSquare` has added `yaxisDir` parameter for flipping the direction
+of genomic coordinates on the y-axis.
+
 # VERSION 1.9.4
 ## BUG FIXES
 
