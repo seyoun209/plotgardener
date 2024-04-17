@@ -538,6 +538,16 @@ plotHicSquare <- function(data, resolution = "auto", zrange = NULL,
             hicPlot$altchromend <- altchromData[[2]]
         }
     }
+    
+    # =========================================================================
+    # SWAP HALVES BASED ON YAXISDIR
+    # =========================================================================
+    
+    if (hicInternal$yaxisDir == "decrease" & hicInternal$half == "top"){
+        hicInternal$half <- "bottom"
+    } else if (hicInternal$yaxisDir == "decrease" & hicInternal$half == "bottom"){
+        hicInternal$half <- "top"
+    }   
 
     # =========================================================================
     # ADJUST RESOLUTION
