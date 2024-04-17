@@ -215,7 +215,7 @@ plotGenomeLabel <- function(chrom, chromstart = NULL, chromend = NULL,
         class = "genomeLabelInternal"
     )
 
-    ## Parsing for "space" from input Manhattan plot from bbAnnoGenomeLabel
+    ## Parsing for "space" from input Manhattan plot from annoGenomeLabel
     additionalParams <- list(...)
     if ("space" %in% names(additionalParams)) {
         genomeLabelInternal$space <- additionalParams$space

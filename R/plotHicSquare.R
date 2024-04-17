@@ -16,6 +16,7 @@
 #'     palette = colorRampPalette(brewer.pal(n = 9, "YlGnBu")),
 #'     colorTrans = "linear",
 #'     half = "both",
+#'     yaxisDir = "increase",
 #'     bg = NA,
 #'     x = NULL,
 #'     y = NULL,
@@ -77,6 +78,12 @@
 #' \item{\code{"top"}: }{Half above the diagonal.}
 #' \item{\code{"bottom"}: }{Half below the diagonal.}
 #' }
+#' @param yaxisDir A string specifying the genomic direction of the y-axis.
+#' Options are \code{"increase"}, where the bottom left corner of the Hi-C map
+#' indicates the origin, and \code{"decrease"}, where the top left corner of the
+#' Hi-C map indicates the origin. This will change the direction of the diagonal
+#' for intrachromosomal maps.
+#' Default value is \code{yaxisDir = "increase"}.
 #' @param bg Character value indicating background color.
 #' Default value is \code{bg = NA}.
 #' @param x A numeric or unit object specifying square Hi-C plot x-location.
@@ -174,7 +181,7 @@ plotHicSquare <- function(data, resolution = "auto", zrange = NULL,
                                 n = 9, "YlGnBu"
                             )),
                             colorTrans = "linear",
-                            half = "both", bg = NA, 
+                            half = "both", yaxisDir = "increase", bg = NA, 
                             x = NULL, y = NULL, width = NULL,
                             height = NULL, just = c("left", "top"),
                             default.units = "inches",
@@ -184,7 +191,7 @@ plotHicSquare <- function(data, resolution = "auto", zrange = NULL,
     # =========================================================================
 
     ## Define a function that catches errors for plotHicSquare
-    errorcheck_plotHicSquare <- function(hic, hicPlot, norm) {
+    errorcheck_plotHicSquare <- function(hic, hicPlot, norm, yaxisDir) {
         
         ###### hic/norm 
         hicErrors(hic = hic, norm = norm)
@@ -238,6 +245,12 @@ plotHicSquare <- function(data, resolution = "auto", zrange = NULL,
                     "interchromosomal plotting.  Options are \'top\' ",
                     "or \'bottom\'.", call. = FALSE)
             }
+        }
+        
+        ##### yaxisDir #####
+        if (!yaxisDir %in% c("increase", "decrease")){
+            stop("Invalid \'yaxisDir\'. Options are \'increase\' ",
+                 "or \'decrease\'.", call. = FALSE)
         }
         
     }
@@ -313,7 +326,7 @@ plotHicSquare <- function(data, resolution = "auto", zrange = NULL,
     }
 
     ## Define a function that sets viewport xscale and yscale
-    vp_scale <- function(hicPlot) {
+    vp_scale <- function(hicPlot, yaxisDir) {
         if (!is.null(hicPlot$chromstart) & !is.null(hicPlot$chromend)) {
             if (is.null(hicPlot$altchrom)) {
                 xscale <- c(hicPlot$chromstart, hicPlot$chromend)
@@ -333,6 +346,11 @@ plotHicSquare <- function(data, resolution = "auto", zrange = NULL,
             xscale <- c(0, 1)
             yscale <- c(0, 1)
         }
+        
+        if (yaxisDir == "decrease"){
+            yscale <- rev(yscale)
+        }
+        
 
         return(list(xscale, yscale))
     }
@@ -467,7 +485,8 @@ plotHicSquare <- function(data, resolution = "auto", zrange = NULL,
     errorcheck_plotHicSquare(
         hic = hicInternal$data,
         hicPlot = hicPlot,
-        norm = hicInternal$norm
+        norm = hicInternal$norm,
+        yaxisDir = hicInternal$yaxisDir
     )
 
     # =========================================================================
@@ -616,7 +635,7 @@ plotHicSquare <- function(data, resolution = "auto", zrange = NULL,
     # =========================================================================
 
     ## Get viewport xscale and yscale
-    scale <- vp_scale(hicPlot = hicPlot)
+    scale <- vp_scale(hicPlot = hicPlot, yaxisDir = hicInternal$yaxisDir)
 
     ## If placing information is provided but plot == TRUE, set up it's own
     ## viewport separate from bb_makepage
