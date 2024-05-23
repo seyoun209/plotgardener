@@ -38,15 +38,15 @@ precise multi-panel figures in R, *Bioinformatics*, 2022.
 
 ## Installation
 
-plotgardener can be installed from Bioconductor version 3.18 
+plotgardener can be installed from Bioconductor version 3.19 
 
-(R version 4.3) as follows:
+(R version 4.4) as follows:
 
 ``` r
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 
-BiocManager::install(version = "3.18")
+BiocManager::install(version = "3.19")
 
 BiocManager::install("plotgardener")
 

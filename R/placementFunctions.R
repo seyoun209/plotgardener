@@ -14,8 +14,14 @@ convert_gpath <- function(grob) {
 ## Define a function to make sure a page viewport exists
 # @param error Error message if page doesn't exist
 check_page <- function(error) {
-    if (!grepl("page", as.character(current.vpPath()))){
+    
+    if (is.null(current.vpPath())){
         stop(error, call. = FALSE)
+    } else {
+        if (!grepl("page", as.character(current.vpPath()))){
+            stop(error, call. = FALSE)
+    }
+    
     }
 }
 
