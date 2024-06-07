@@ -139,15 +139,38 @@ read_pairedData <- function(data, assembly, warning = FALSE){
             " chromend columns must be integers or numerics.", call. = FALSE)
     }
     
+    ## Check anchor orders and try to reorder if necessary
+    anchor1 <- GRanges(seqnames = data[,"chrom1"], 
+                       ranges = IRanges(start = data[,"start1"], 
+                                        end = data[,"end1"]))
+    
+    anchor2 <- GRanges(seqnames = data[,"chrom2"], 
+                       ranges = IRanges(start = data[,"start2"], 
+                                        end = data[,"end2"]))
+    
+    swap <- anchor2 < anchor1
+    if (any(swap)){
+        # Swap any anchors where anchor2 < anchor1
+        temp <- anchor1[swap]
+        anchor1[swap] <- anchor2[swap]
+        anchor2[swap] <- temp
+        # Convert back to 6 column bedpe format
+        swapped_data <- cbind(as.data.frame(anchor1)[, c("seqnames", "start", "end")],
+                              as.data.frame(anchor2)[,c("seqnames", "start", "end")])
+        colnames(swapped_data) <- c("chrom1", "start1", "end1", 
+                                    "chrom2", "start2", "end2")
+        # Join back with any trailing data columns
+        data <- cbind(swapped_data, data[,-c(1:6)])
+        warning("One or more pairs contained unordered anchors and were",
+                " swapped for plotting.", call. = FALSE)
+    }    
+    
     if (warning == TRUE){
         if (nrow(data) < 1){
             warning("\'data\' input contains no values.", call. = FALSE)
-        }
-        
+            }
     }
-    
     return(data)
-    
     }
     
 # Define a function that checks matching for GRanges/GInteractions
