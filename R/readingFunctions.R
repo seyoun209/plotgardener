@@ -1,5 +1,6 @@
 # Define a function to read in various kinds of genomic range data
 #' @importFrom plyranges %>%
+#' @importFrom GenomicRanges GRanges
 read_rangeData <- function(data, assembly, chrom = NULL, 
                         start = NULL, end = NULL, type = "range"){
     

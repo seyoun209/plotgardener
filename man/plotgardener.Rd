@@ -2,8 +2,8 @@
 % Please edit documentation in R/plotgardener.R
 \docType{package}
 \name{plotgardener}
-\alias{plotgardener}
 \alias{plotgardener-package}
+\alias{plotgardener}
 \title{plotgardener: Coordinate-based Genomic Visualization Package for R}
 \description{
 plotgardener is a coordinate-based genomic visualization package for R.
