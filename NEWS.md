@@ -1,3 +1,13 @@
+# VERSION 1.10.1
+## BUG FIXES
+
+* `plotPairs` and `plotPairsArches` check and swap order of anchors.
+* `plotTranscripts` `NULL` label checking bug fix.
+
+# VERSION 1.10.0
+
+Version bump for Bioconductor 3.19 release.
+
 # VERSION 1.9.5
 ## NEW FEATURES
 
@@ -8,7 +18,7 @@ of genomic coordinates on the y-axis.
 ## BUG FIXES
 
 * `plotManhattan` accommodates `GRanges` data input.
-
+s
 # VERSION 1.9.3
 ## BUG FIXES
 
