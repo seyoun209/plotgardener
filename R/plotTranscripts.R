@@ -183,10 +183,11 @@ plotTranscripts <- function(chrom, chromstart = NULL, chromend = NULL,
         regionErrors(chromstart = transcriptPlot$chromstart,
                     chromend = transcriptPlot$chromend)
 
-
-        if (!labels %in% c(NULL, "transcript", "gene", "both")) {
-            stop("Invalid \'labels\' input. Options are \'NULL\', ",
-                "\'transcript\', \'gene\', or \'both\'.", call. = FALSE)
+        if (!is.null(labels)){
+            if (!labels %in% c("transcript", "gene", "both")) {
+                stop("Invalid \'labels\' input. Options are \'NULL\', ",
+                     "\'transcript\', \'gene\', or \'both\'.", call. = FALSE)
+            }
         }
         
         checkColorby(fill = fill,
