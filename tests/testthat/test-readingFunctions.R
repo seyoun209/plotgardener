@@ -26,8 +26,8 @@ test_that("read_pairedData", {
     library(GenomicRanges)
     library(InteractionSet)
     all.regions <- GRanges("chrA", IRanges(0:9*10+1, 1:10*10))
-    index.1 <- c(1,5,10)
-    index.2 <- c(3,2,6)
+    index.1 <- c(1,2,3)
+    index.2 <- c(4,5,6)
     region.1 <- all.regions[index.1]
     region.2 <- all.regions[index.2]
     gi <- GInteractions(region.1, region.2)
@@ -39,6 +39,15 @@ test_that("read_pairedData", {
     expect_equal(plotgardener:::read_pairedData(data = gi,
                                            assembly = "hg19"),
                  expectedgi)
+    
+    ## Warning for out of order anchors
+    index.3 <- c(1,6,8)
+    index.4 <- c(2,4,7)
+    region.3 <- all.regions[index.3]
+    region.4 <- all.regions[index.4]
+    gi2 <- GInteractions(region.3, region.4)
+    expect_warning(plotgardener:::read_pairedData(data = gi2,
+                                                  assembly = "hg19"))
     
     ## Errors for invalid column types
     expectedgi$start1 <- as.character(expectedgi$start1)
