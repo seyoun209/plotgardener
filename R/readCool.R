@@ -1,4 +1,4 @@
-                                                                                                                  #' Check for .(m)cool file and contents
+#' Check for .(m)cool file and contents
 #' @author Sarah Parker
 #' 
 #' @importFrom glue glue glue_collapse
@@ -428,15 +428,75 @@ readCoolChroms <- function(file, resolution = NULL){
 #'     zrange = NULL,
 #'     norm = "NONE",
 #'     matrix = "observed",
+#'     binChunkSize = 5e6,
 #'     params = NULL,
 #'     quiet = FALSE
 #' )
 #' 
+#' @param file A character value specifying the path to the .(m)cool file.
+#' @param chrom Chromosome of data, as a string.
+#' @param chromstart Integer start position on chromosome.
+#' @param chromend Integer end position on chromosome.
+#' @param altchrom Alternate chromosome for interchromosomal data,
+#' as a string.
+#' @param altchromstart Alternate chromosome integer start position
+#' for interchromosomal data.
+#' @param altchromend Alternate chromosome integer end position
+#' for interchromosomal data.
+#' @param resolution A numeric specifying the width of each pixel.
+#' "auto" will attempt to choose a resolution in basepairs based on
+#' the size of the region.
+#' @param zrange A numeric vector of length 2 specifying the range of
+#' interaction scores, where extreme values will be set to the max or min.
+#' @param norm Character value specifying hic data normalization method.
+#' This value must be found in the .(m)cool file.
+#' Default value is \code{norm = "NONE"}.
+#' @param binChunkSize A numeric specifying the number of bin indices to read 
+#' from a file for a given region at a given resolution. If the total amount of 
+#' data is larger than the \code{binChunkSize}, data will be read in multiple
+#' chunks. Default value is \code{binChunkSize = 5e6}.
+#' @param params An optional \link[plotgardener]{pgParams} object
+#' containing relevant function parameters.
+#' @param quiet A logical indicating whether or not to print messages.
+#' 
+#' 
+#' @return Returns a 3-column dataframe in sparse upper triangular
+#' format with the following columns: \code{chrom}, \code{altchrom},
+#' \code{counts}.
+#' 
+#' @examples
+#' 
+#' ## .cool file
+#' coolFile <- file.path(tempdir(), "Rao2014-IMR90-MboI-allreps-filtered.1000kb.cool")
+#' download.file(url = "https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Rao2014-IMR90-MboI-allreps-filtered.1000kb.cool",
+#'     destfile = coolFile)
+#' 
+#' ## Read in region `chr2:10000000-22000000` at 1000Kb cool file resolution
+#' coolData <- readCool(file = coolFile, chrom = "chr2", chromstart = 10000000,
+#'                      chromend = 22000000,
+#'                      resolution = 1000000)
+#' 
+#' ## .mcool file
+#' mcoolFile <- file.path(tempdir(), "LEUK_HEK_PJA27_inter_30.mcool")
+#' download.file(url = "https://zenodo.org/records/10906240/files/LEUK_HEK_PJA27_inter_30.mcool?download=1",
+#'     destfile = mcoolFile)
+#'
+#' ## Read in region `chr2:1000000-5000000` at 100Kb resolution
+#' mcoolData_100Kb <- readCool(file = mcoolFile, chrom = "2",
+#'                             chromstart = 1000000, chromend = 5000000,
+#'                             resolution = 100000)
+#' 
+#' ## Read in data for chr2 at 2500Kb resolution 
+#' mcoolData_2500Kb <- readCool(file = mcoolFile, chrom = "2",
+#'                              resolution = 2500000)
+#' @seealso \link[plotgardener]{readHic}
+#'
 #' @importFrom rlang inform
+#' @export
 readCool <- function(file, chrom, chromstart = NULL, chromend = NULL, 
                      altchrom = NULL, altchromstart = NULL, altchromend = NULL, 
                      resolution = "auto", zrange = NULL, norm = "NONE",
-                     params = NULL, quiet = FALSE){
+                     binChunkSize = 5e6, params = NULL, quiet = FALSE){
     
     # =========================================================================
     # PARSE PARAMETERS
@@ -574,16 +634,15 @@ readCool <- function(file, chrom, chromstart = NULL, chromend = NULL,
     ## Read 5 million indices at a time for more efficient calling
     allBin1s <- (bin_offsets[start1bin+1]+1):(bin_offsets[end1bin+1]+1)
     
-    binChunkSize <- 5e6
-    
-    if (length(allBin1s) > binChunkSize){
+    if (length(allBin1s) > rcool$binChunkSize){
         binChunks <- seq(bin_offsets[start1bin+1]+1,
                          bin_offsets[end1bin+1]+1,
                          binChunkSize)
         
         
-        count_idx <- na.omit(unlist(lapply(binChunks, .pullBinChunks, file = rcool$file,
-               bin_offsets = bin_offsets, binChunkSize = binChunkSize,
+        count_idx <- na.omit(unlist(lapply(binChunks, .pullBinChunks, 
+                                           file = rcool$file,
+               bin_offsets = bin_offsets, binChunkSize = rcool$binChunkSize,
                datasetPath = datasetPath)))
         
     } else {
