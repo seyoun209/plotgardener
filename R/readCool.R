@@ -4,6 +4,7 @@
 #' @importFrom glue glue glue_collapse
 #' @importFrom rlang abort
 #' @importFrom rhdf5 H5Fis_hdf5 h5ls
+#' @importFrom dplyr pull
 .checkCool <- function(file){
     
     ## Check if file is hdf5
@@ -296,7 +297,32 @@ readCoolChroms <- function(file, resolution = NULL){
     chromInfo <- readCoolChroms(file, resolution = resolution)
     chromLength <- chromInfo[chromInfo$name == chrom, "length"]
     
-    return(list(0, chromLength))
+    return(list(1, chromLength))
+}
+
+#' Read in data for a bin chunk
+#' 
+#' @importFrom rhdf5 h5read
+.pullBinChunks <- function(binChunk, file, bin_offsets, binChunkSize,
+                           datasetPath){
+    
+    binChunkEnd <- binChunk + binChunkSize - 1
+    
+    if (binChunkEnd > bin_offsets[end1bin+1]+1){
+        binChunkEnd <- bin_offsets[end1bin+1]+1
+    }
+    if (binChunkEnd > binChunk){
+        bin2s <- h5read(file, 
+                        name = paste0(datasetPath,"/pixels/bin2_id"),
+                        index = list(binChunk:binChunkEnd)) 
+        
+        ## Find indexes for interactions with all bin2s between start2 and end2
+        count_idx <- which(bin2s %in% start2bin:end2bin) + binChunk - 1
+    } else {
+        count_idx <- NA
+    }
+    
+    return(count_idx)
 }
 
 
@@ -331,12 +357,13 @@ readCoolChroms <- function(file, resolution = NULL){
     regionErrors(chromstart = chromstart, chromend = chromend)
     
     ## Check that chromstart is in bounds
-    chromLength <- chromInfo[chromInfo$name == chrom, "length"]
-    if (chromstart < 0 | chromstart > chromLength){
-        abort(c(glue("chromstart must be between 0 and chromosome end."),
-                "i" = "{chrom} length is {chromLength} bp."))
+    if (!is.null(chromstart)){
+        chromLength <- chromInfo[chromInfo$name == chrom, "length"]
+        if (chromstart < 0 | chromstart > chromLength){
+            abort(c(glue("chromstart must be between 0 and chromosome end."),
+                    "i" = "{chrom} length is {chromLength} bp."))
+        }
     }
-    
     
     if (!is.null(altchrom)){
         if (!altchrom %in% chromInfo$name){
@@ -405,7 +432,7 @@ readCoolChroms <- function(file, resolution = NULL){
 #'     quiet = FALSE
 #' )
 #' 
-#' 
+#' @importFrom rlang inform
 readCool <- function(file, chrom, chromstart = NULL, chromend = NULL, 
                      altchrom = NULL, altchromstart = NULL, altchromend = NULL, 
                      resolution = "auto", zrange = NULL, norm = "NONE",
@@ -494,8 +521,8 @@ readCool <- function(file, chrom, chromstart = NULL, chromend = NULL,
     # =========================================================================
 
     fileType <- .checkCool(rcool$file)
-    datasetPath <- ""
     chrInfo <- readCoolChroms(rcool$file, rcool$resolution)
+    datasetPath <- ""
     if (fileType == ".mcool"){
         datasetPath <- paste0("/resolutions/", as.integer(rcool$resolution))
     }
@@ -505,7 +532,7 @@ readCool <- function(file, chrom, chromstart = NULL, chromend = NULL,
     
     start1 <- (rcool$chromstart %/% rcool$resolution) * rcool$resolution
     start2 <- (rcool$altchromstart %/% rcool$resolution) * rcool$resolution
-    
+
     end1 <- (rcool$chromend %/% rcool$resolution) * rcool$resolution
     end2 <- (rcool$altchromend %/% rcool$resolution) * rcool$resolution
     
@@ -554,23 +581,11 @@ readCool <- function(file, chrom, chromstart = NULL, chromend = NULL,
                          bin_offsets[end1bin+1]+1,
                          binChunkSize)
         
-        count_idx <- numeric(0)
-        for (binChunk in binChunks){
-            binChunkEnd <- binChunk + binChunkSize - 1
-            if(binChunkEnd > bin_offsets[end1bin+1]+1){
-                binChunkEnd <- bin_offsets[end1bin+1]+1
-            }
-            if (binChunkEnd > binChunk){
-                bin2s <- h5read(rcool$file, 
-                                name = paste0(datasetPath,"/pixels/bin2_id"),
-                                index = list(binChunk:binChunkEnd)) 
-                
-                ## Find indexes for interactions with all bin2s between start2 and end2
-                count_idx <- c(count_idx,
-                               which(bin2s %in% start2bin:end2bin) + 
-                                   binChunk - 1)
-            }
-        } 
+        
+        count_idx <- na.omit(unlist(lapply(binChunks, .pullBinChunks, file = rcool$file,
+               bin_offsets = bin_offsets, binChunkSize = binChunkSize,
+               datasetPath = datasetPath)))
+        
     } else {
         bin2s <- h5read(rcool$file, 
                         name = paste0(datasetPath,"/pixels/bin2_id"),
