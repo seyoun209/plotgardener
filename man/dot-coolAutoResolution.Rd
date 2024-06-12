@@ -6,6 +6,13 @@
 \usage{
 .coolAutoResolution(file, chromstart, chromend)
 }
+\arguments{
+\item{file}{Path to .(m)cool file}
+
+\item{chromstart}{Chromstart of region}
+
+\item{chromend}{Chromend of region}
+}
 \description{
 Determine best resolution for size of region for .(m)cool files
 }

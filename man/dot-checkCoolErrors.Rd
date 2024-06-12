@@ -17,6 +17,27 @@
   resolution
 )
 }
+\arguments{
+\item{file}{Path to .(m)cool file}
+
+\item{chrom}{User-inputted chromosome}
+
+\item{chromstart}{User-inputted chromstart, can still be NULL at this point.}
+
+\item{chromend}{User-inputted chromend, can still be NULL at this point.}
+
+\item{zrange}{User-inputted zrange.}
+
+\item{altchrom}{User-inputted alt chromosome.}
+
+\item{altchromstart}{User-inputted alt chromstart.}
+
+\item{altchromend}{User-inputted alt chromend.}
+
+\item{norm}{User-inputted normalization.}
+
+\item{resolution}{Resolution, either user-inputted or determined by 'auto'.}
+}
 \description{
 Error checking function for .(m)cool files
 }

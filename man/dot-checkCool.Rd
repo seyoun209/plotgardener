@@ -6,6 +6,9 @@
 \usage{
 .checkCool(file)
 }
+\arguments{
+\item{file}{Path to .(m)cool file}
+}
 \description{
 Check for .(m)cool file and contents
 }

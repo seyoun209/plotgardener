@@ -1,6 +1,8 @@
 #' Check for .(m)cool file and contents
 #' @author Sarah Parker
 #' 
+#' @param file Path to .(m)cool file
+#' 
 #' @importFrom glue glue glue_collapse
 #' @importFrom rlang abort
 #' @importFrom rhdf5 H5Fis_hdf5 h5ls
@@ -231,6 +233,9 @@ readCoolChroms <- function(file, resolution = NULL){
 
 #' Determine best resolution for size of region for .(m)cool files
 #' 
+#' @param file Path to .(m)cool file
+#' @param chromstart Chromstart of region
+#' @param chromend Chromend of region
 .coolAutoResolution <- function(file, chromstart, chromend){
     
     fileResolutions <- readCoolBpResolutions(file)
@@ -292,6 +297,9 @@ readCoolChroms <- function(file, resolution = NULL){
 #' Add (alt)chromstart and (alt)chromend for NULL (alt)chrom region of 
 #' .(m)cool files
 #' 
+#' @param file Path to .(m)cool file
+#' @param chrom Chromosome of region; can also be altchromosome
+#' @param resolution Resolution to read chromsome info from
 .coolRegion <- function(file, chrom, resolution){
     
     chromInfo <- readCoolChroms(file, resolution = resolution)
@@ -302,9 +310,20 @@ readCoolChroms <- function(file, resolution = NULL){
 
 #' Read in data for a bin chunk
 #' 
+#' @param binChunk The binChunk indeces to read
+#' @param file Path to .(m)cool file
+#' @param bin_offsets Read in bin1 offsets
+#' @param binChunkSize Size of bin chunk, for comparison against the end of 
+#' the bin chunk
+#' @param datasetPath Dataset path, for specifying resolution in .mcool file
+#' @param end1bin Bin where end1 starts
+#' @param start2bin Bin for chr2 starts
+#' @param end2bin Bin for end2 starts
+#' 
 #' @importFrom rhdf5 h5read
 .pullBinChunks <- function(binChunk, file, bin_offsets, binChunkSize,
-                           datasetPath){
+                           datasetPath, end1bin,
+                           start2bin, end2bin){
     
     binChunkEnd <- binChunk + binChunkSize - 1
     
@@ -328,6 +347,19 @@ readCoolChroms <- function(file, resolution = NULL){
 
 #' Error checking function for .(m)cool files
 #' 
+#' @param file Path to .(m)cool file
+#' @param chrom User-inputted chromosome
+#' @param chromstart User-inputted chromstart, can still be NULL at this point.
+#' @param chromend User-inputted chromend, can still be NULL at this point.
+#' @param zrange User-inputted zrange.
+#' @param altchrom User-inputted alt chromosome.
+#' @param altchromstart User-inputted alt chromstart.
+#' @param altchromend User-inputted alt chromend.
+#' @param norm User-inputted normalization.
+#' @param resolution Resolution, either user-inputted or determined by 'auto'.
+#' 
+#' @importFrom glue glue
+#' @importFrom rlang abort
 .checkCoolErrors <- function(file, chrom, chromstart, chromend, zrange,
                        altchrom, altchromstart, altchromend, norm, resolution){
     ## File input
@@ -422,12 +454,9 @@ readCoolChroms <- function(file, resolution = NULL){
 #'     altchrom = NULL,
 #'     altchromstart = NULL,
 #'     altchromend = NULL,
-#'     assembly = "hg38",
 #'     resolution = "auto",
-#'     res_scale = "BP",
 #'     zrange = NULL,
 #'     norm = "NONE",
-#'     matrix = "observed",
 #'     binChunkSize = 5e6,
 #'     params = NULL,
 #'     quiet = FALSE
@@ -491,7 +520,7 @@ readCoolChroms <- function(file, resolution = NULL){
 #'                              resolution = 2500000)
 #' @seealso \link[plotgardener]{readHic}
 #'
-#' @importFrom rlang inform
+#' @importFrom rlang inform warn
 #' @export
 readCool <- function(file, chrom, chromstart = NULL, chromend = NULL, 
                      altchrom = NULL, altchromstart = NULL, altchromend = NULL, 
@@ -643,7 +672,8 @@ readCool <- function(file, chrom, chromstart = NULL, chromend = NULL,
         count_idx <- na.omit(unlist(lapply(binChunks, .pullBinChunks, 
                                            file = rcool$file,
                bin_offsets = bin_offsets, binChunkSize = rcool$binChunkSize,
-               datasetPath = datasetPath)))
+               datasetPath = datasetPath, end1bin = end1bin,
+               start2bin = start2bin, end2bin = end2bin)))
         
     } else {
         bin2s <- h5read(rcool$file, 

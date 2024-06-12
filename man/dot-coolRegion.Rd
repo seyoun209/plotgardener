@@ -7,6 +7,13 @@
 \usage{
 .coolRegion(file, chrom, resolution)
 }
+\arguments{
+\item{file}{Path to .(m)cool file}
+
+\item{chrom}{Chromosome of region; can also be altchromosome}
+
+\item{resolution}{Resolution to read chromsome info from}
+}
 \description{
 Add (alt)chromstart and (alt)chromend for NULL (alt)chrom region of 
 .(m)cool files

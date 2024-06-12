@@ -12,12 +12,9 @@ readCool(
     altchrom = NULL,
     altchromstart = NULL,
     altchromend = NULL,
-    assembly = "hg38",
     resolution = "auto",
-    res_scale = "BP",
     zrange = NULL,
     norm = "NONE",
-    matrix = "observed",
     binChunkSize = 5e6,
     params = NULL,
     quiet = FALSE
