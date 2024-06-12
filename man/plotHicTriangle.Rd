@@ -30,7 +30,7 @@ plotHicTriangle(
 )
 }
 \arguments{
-\item{data}{Path to .hic file as a string or a 3-column
+\item{data}{Path to .hic or .(m)cool file as a string or a 3-column
 dataframe of interaction counts in sparse upper triangular format.}
 
 \item{resolution}{A numeric specifying the width in basepairs of
@@ -178,5 +178,5 @@ annoHeatmapLegend(
 pageGuideHide()
 }
 \seealso{
-\link[plotgardener]{readHic}
+\link[plotgardener]{readHic}, \link[plotgardener]{readCool}
 }

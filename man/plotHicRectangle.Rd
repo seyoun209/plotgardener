@@ -30,8 +30,8 @@ plotHicRectangle(
 )
 }
 \arguments{
-\item{data}{Path to .hic file as a string or a 3-column dataframe of
-interaction counts in sparse upper triangular format.}
+\item{data}{Path to .hic or .(m)cool file as a string or a 3-column 
+dataframe of interaction counts in sparse upper triangular format.}
 
 \item{resolution}{A numeric specifying the width in basepairs
 of each pixel. For hic files, "auto" will attempt to choose a
@@ -181,5 +181,6 @@ annoHeatmapLegend(
 pageGuideHide()
 }
 \seealso{
-\link[plotgardener]{readHic}, \link[plotgardener]{plotHicTriangle}
+\link[plotgardener]{readHic}, \link[plotgardener]{readCool},
+\link[plotgardener]{plotHicTriangle}
 }

@@ -183,14 +183,15 @@ hicErrors <- function(hic, norm){
     
     if (!is(hic, "data.frame")) {
         
-        ## if it's a file path, it needs to be a .hic file
-        if (file_ext(hic) != "hic") {
-            stop("Invalid input. File must have a \".hic\" extension",
-                call. = FALSE
+        ## if it's a file path, it needs to be a .hic, .cool, or .mcool file
+        if (!file_ext(hic) %in% c("hic", "cool", "mcool")) {
+            stop("Invalid input. File must have a \".hic\", \".cool\", or",
+                 "\".mcool\" extension.",
+                 call. = FALSE
             )
         }
         
-        ## if it's a valid .hic file, it needs to have a valid norm
+        ## if it's a valid file, it needs to have a valid norm
         if (is.null(norm)) {
             stop("If providing .hic file, please specify \'norm\'.",
                 call. = FALSE

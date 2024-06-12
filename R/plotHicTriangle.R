@@ -25,7 +25,7 @@
 #'     quiet = FALSE
 #' )
 #'
-#' @param data Path to .hic file as a string or a 3-column
+#' @param data Path to .hic or .(m)cool file as a string or a 3-column
 #' dataframe of interaction counts in sparse upper triangular format.
 #' @param resolution A numeric specifying the width in basepairs of
 #' each pixel. For hic files, "auto" will attempt to choose a
@@ -146,7 +146,7 @@
 #' If \code{height} is \eqn{<} \eqn{0.5 * width}, the top of the triangle
 #' will be cropped to the given \code{height}.
 #'
-#' @seealso \link[plotgardener]{readHic}
+#' @seealso \link[plotgardener]{readHic}, \link[plotgardener]{readCool}
 #'
 #' @export
 plotHicTriangle <- function(data, resolution = "auto", zrange = NULL,
@@ -171,7 +171,7 @@ plotHicTriangle <- function(data, resolution = "auto", zrange = NULL,
     ## Define a function that catches errors for plotTriangleHic
     errorcheck_plotTriangleHic <- function(hic, hicPlot, norm) {
 
-        ###### hic/norm #####
+        ###### hic/cool/mcool/norm #####
         hicErrors(hic = hic,
                     norm = norm)
 
