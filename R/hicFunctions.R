@@ -4,7 +4,7 @@
 adjust_resolution <- function(hic, hicPlot) {
     if (!("data.frame" %in% class(hic))) {
         if (!is.null(hicPlot$chromstart) & !is.null(hicPlot$chromend)) {
-            if (file_ext(hic) == ".hic"){
+            if (file_ext(hic) == "hic"){
                 fileResolutions <- strawr::readHicBpResolutions(hic)
             } else {
                 fileResolutions <- readCoolBpResolutions(hic)
