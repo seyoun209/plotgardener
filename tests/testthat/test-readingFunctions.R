@@ -79,3 +79,67 @@ test_that("readHic", {
     expect_equal(min(hicData[,1]), 20000000)
     expect_equal(max(hicData[,1]), 20300000)
 })
+
+test_that("readCool", {
+    
+    ## .cool file
+    coolFile <- file.path(tempdir(), "Rao2014-IMR90-MboI-allreps-filtered.1000kb.cool")
+    download.file(url = "https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Rao2014-IMR90-MboI-allreps-filtered.1000kb.cool",
+                            destfile = coolFile)
+    on.exit(unlink(coolFile))
+    
+    # File type
+    expect_equal(.checkCool(file = coolFile), ".cool")
+    
+    # Resolutions
+    expect_equal(readCoolBpResolutions(file = coolFile), 1000000)
+    expect_error(readCoolNorms(file = coolFile, resolution = 5000), "resolution")
+    expect_error(readCoolChroms(file = coolFile, resolution = 5000), "resolution")
+    
+    # Norms
+    expect_equal(readCoolNorms(file = coolFile), c("BALANCE", "NONE"))
+    
+    # Chroms
+    cool_chroms <- readCoolChroms(file = coolFile) |>
+        pull(name)
+    expect_setequal(cool_chroms, paste0("chr", c(seq(1:22), "X", "Y", "M")))
+    expect_error(.checkCoolErrors(file = coolFile, chrom = "2",
+                                  chromstart = NULL, chromend = NULL,
+                                  zrange = NULL, altchrom = NULL,
+                                  altchromstart = NULL, altchromend = NULL,
+                                  norm = "NONE", resolution = 1000000), 
+                 "chrom")
+    
+    ## .mcool file
+    mcoolFile <- file.path(tempdir(), "LEUK_HEK_PJA27_inter_30.mcool")
+    download.file(url = "https://zenodo.org/records/10906240/files/LEUK_HEK_PJA27_inter_30.mcool?download=1",
+                  destfile = mcoolFile)
+    on.exit(unlink(mcoolFile))
+    
+    # File type
+    expect_equal(.checkCool(file = mcoolFile), ".mcool")
+    
+    # Resolutions
+    expect_setequal(readCoolBpResolutions(file = mcoolFile),
+                    c(5000, 10000, 25000, 50000, 100000, 250000, 500000,
+                      1000000, 2500000))
+    expect_error(readCoolNorms(file = mcoolFile, resolution = 2500), 
+                 "resolution")
+    
+    # Norms
+    # Vector of norms for one resolution
+    expect_setequal(readCoolNorms(file = mcoolFile, resolution = 10000),
+                    c("KR", "VC", "VC_SQRT", "NONE"))
+    # List of vectors for all resolutions
+    expect_type(readCoolNorms(file = mcoolFile), "list")
+    
+    # Chroms
+    expect_type(readCoolChroms(file = mcoolFile), "list")
+    expect_error(.checkCoolErrors(file = mcoolFile, chrom = "chr2",
+                                  chromstart = NULL, chromend = NULL,
+                                  zrange = NULL, altchrom = NULL,
+                                  altchromstart = NULL, altchromend = NULL,
+                                  norm = "NONE", resolution = 1000000), 
+                 "chrom")
+    
+})

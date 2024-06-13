@@ -274,20 +274,6 @@ readHic <- function(file, chrom, chromstart = NULL, chromend = NULL,
         return(hic)
     }
 
-    ## Define a function to scale data with zrange
-    scale_data <- function(upper, zrange) {
-        if (!is.null(zrange)) {
-            upper$counts[upper$counts <= zrange[1]] <- zrange[1]
-            upper$counts[upper$counts >= zrange[2]] <- zrange[2]
-        } else {
-
-            # if null, zrange will be set to (0, max(data))
-            upper$counts[upper$counts <= 0] <- 0
-        }
-
-        return(upper)
-    }
-
     ## Define a function to rename columns
     rename_columns <- function(upper, chrom, altchrom) {
         if (is.null(altchrom)) {

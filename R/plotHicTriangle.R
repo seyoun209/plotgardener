@@ -25,10 +25,10 @@
 #'     quiet = FALSE
 #' )
 #'
-#' @param data Path to .hic file as a string or a 3-column
+#' @param data Path to .hic or .(m)cool file as a string or a 3-column
 #' dataframe of interaction counts in sparse upper triangular format.
 #' @param resolution A numeric specifying the width in basepairs of
-#' each pixel. For hic files, "auto" will attempt to choose a
+#' each pixel. For files, "auto" will attempt to choose a
 #' resolution based on the size of the region. For
 #' dataframes, "auto" will attempt to detect the resolution
 #' the dataframe contains.
@@ -36,9 +36,10 @@
 #' range of interaction scores to plot, where extreme values
 #' will be set to the max or min.
 #' @param norm Character value specifying hic data normalization method,
-#' if giving .hic file. This value must be found in the .hic file.
-#' Default value is \code{norm = "KR"}.
-#' @param matrix Character value indicating the type of matrix to output.
+#' if giving .hic or .(m)cool file. This value must be found in the .hic or
+#' .(m)cool file. Default value is \code{norm = "KR"}.
+#' @param matrix Character value indicating the type of matrix to output for
+#' .hic files.
 #' Default value is \code{matrix = "observed"}. Options are:
 #' \itemize{
 #' \item{\code{"observed"}: }{Observed counts.}
@@ -146,7 +147,7 @@
 #' If \code{height} is \eqn{<} \eqn{0.5 * width}, the top of the triangle
 #' will be cropped to the given \code{height}.
 #'
-#' @seealso \link[plotgardener]{readHic}
+#' @seealso \link[plotgardener]{readHic}, \link[plotgardener]{readCool}
 #'
 #' @export
 plotHicTriangle <- function(data, resolution = "auto", zrange = NULL,
@@ -171,7 +172,7 @@ plotHicTriangle <- function(data, resolution = "auto", zrange = NULL,
     ## Define a function that catches errors for plotTriangleHic
     errorcheck_plotTriangleHic <- function(hic, hicPlot, norm) {
 
-        ###### hic/norm #####
+        ###### hic/cool/mcool/norm #####
         hicErrors(hic = hic,
                     norm = norm)
 

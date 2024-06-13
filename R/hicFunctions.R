@@ -4,8 +4,12 @@
 adjust_resolution <- function(hic, hicPlot) {
     if (!("data.frame" %in% class(hic))) {
         if (!is.null(hicPlot$chromstart) & !is.null(hicPlot$chromend)) {
-            fileResolutions <- strawr::readHicBpResolutions(hic)
-
+            if (file_ext(hic) == "hic"){
+                fileResolutions <- strawr::readHicBpResolutions(hic)
+            } else {
+                fileResolutions <- readCoolBpResolutions(hic)
+            }
+            
             ## Get range of data and try to pick a resolution
             dataRange <- hicPlot$chromend - hicPlot$chromstart
             if (dataRange >= 150000000) {
@@ -109,30 +113,60 @@ hic_limit <- function(hic, hicPlot){
 # @param quiet message quiet parameter
 read_data <- function(hic, hicPlot, norm, assembly, type, quiet) {
 
-    ## if .hic file, read in
+    ## if file, read in
     if (!("data.frame" %in% class(hic))) {
-        if (!is.null(hicPlot$chromstart) & !is.null(hicPlot$chromend) &
-            !is.na(hicPlot$resolution)) {
-            readchromstart <- hicPlot$chromstart - hicPlot$resolution
-            readchromend <- hicPlot$chromend + hicPlot$resolution
-            readaltchromstart <- hicPlot$altchromstart - hicPlot$resolution
-            readaltchromend <- hicPlot$altchromend + hicPlot$resolution
-            hic <- suppressWarnings(readHic(
-                file = hic, chrom = hicPlot$chrom,
-                chromstart = readchromstart,
-                chromend = readchromend,
-                assembly = assembly,
-                resolution = hicPlot$resolution,
-                zrange = hicPlot$zrange,
-                norm = norm,
-                altchrom = hicPlot$altchrom,
-                altchromstart = readaltchromstart,
-                altchromend = readaltchromend,
-                matrix = type
-            ))
+        # .hic file
+        if (file_ext(hic) == "hic"){
+            if (!is.null(hicPlot$chromstart) & !is.null(hicPlot$chromend) &
+                !is.na(hicPlot$resolution)) {
+                readchromstart <- hicPlot$chromstart - hicPlot$resolution
+                readchromend <- hicPlot$chromend + hicPlot$resolution
+                readaltchromstart <- hicPlot$altchromstart - hicPlot$resolution
+                readaltchromend <- hicPlot$altchromend + hicPlot$resolution
+                hic <- suppressWarnings(readHic(
+                    file = hic, chrom = hicPlot$chrom,
+                    chromstart = readchromstart,
+                    chromend = readchromend,
+                    assembly = assembly,
+                    resolution = hicPlot$resolution,
+                    zrange = hicPlot$zrange,
+                    norm = norm,
+                    altchrom = hicPlot$altchrom,
+                    altchromstart = readaltchromstart,
+                    altchromend = readaltchromend,
+                    matrix = type
+                ))
+            } else {
+                hic <- data.frame(matrix(nrow = 0, ncol = 3))
+            }
         } else {
-            hic <- data.frame(matrix(nrow = 0, ncol = 3))
+            
+            if (!is.null(hicPlot$chromstart) & !is.null(hicPlot$chromend) &
+                !is.na(hicPlot$resolution)){
+                
+                readchromstart <- hicPlot$chromstart - hicPlot$resolution
+                readchromend <- hicPlot$chromend + hicPlot$resolution
+                readaltchromstart <- hicPlot$altchromstart - hicPlot$resolution
+                readaltchromend <- hicPlot$altchromend + hicPlot$resolution
+
+                # .(m)cool file 
+                hic <- suppressWarnings(readCool(
+                    file = hic, chrom = hicPlot$chrom,
+                    chromstart = readchromstart,
+                    chromend = readchromend,
+                    altchrom = hicPlot$altchrom,
+                    altchromstart = readaltchromstart,
+                    altchromend = readaltchromend,
+                    resolution = hicPlot$resolution,
+                    norm = norm,
+                    zrange = hicPlot$zrange
+                ))
+                
+            } else {
+                hic <- data.frame(matrix(nrow = 0, ncol = 3))
+            }
         }
+        
     } else {
     
         if (!is.null(hicPlot$chromstart) & !is.null(hicPlot$chromend) &
@@ -151,8 +185,8 @@ read_data <- function(hic, hicPlot, norm, assembly, type, quiet) {
                     warning("`plotHicRectangle` requires additional data to",
                 " plot a rectangular plot. Data is missing from input ",
                 "dataframe for region and plot will be a trapezoid. To avoid ",
-                "this missing data, call `plotHicRectangle` with full .hic",
-                " file.", call. = FALSE
+                "this missing data, call `plotHicRectangle` with full .hic or ",
+                " .(m)cool file.", call. = FALSE
                     )
                 }
             }
@@ -205,4 +239,18 @@ inherit_half <- function(hic) {
     }
 
     return(half)
+}
+
+## Define a function to scale data with zrange
+scale_data <- function(upper, zrange) {
+    if (!is.null(zrange)) {
+        upper$counts[upper$counts <= zrange[1]] <- zrange[1]
+        upper$counts[upper$counts >= zrange[2]] <- zrange[2]
+    } else {
+        
+        # if null, zrange will be set to (0, max(data))
+        upper$counts[upper$counts <= 0] <- 0
+    }
+    
+    return(upper)
 }
