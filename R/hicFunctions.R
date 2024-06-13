@@ -140,18 +140,31 @@ read_data <- function(hic, hicPlot, norm, assembly, type, quiet) {
                 hic <- data.frame(matrix(nrow = 0, ncol = 3))
             }
         } else {
-           # .(m)cool file 
-            hic <- suppressWarnings(readCool(
-                file = hic, chrom = hicPlot$chrom,
-                chromstart = readchromstart,
-                chromend = readchromend,
-                altchrom = hicPlot$altchrom,
-                altchromstart = readaltchromstart,
-                altchromend = readalatchromend,
-                resolution = hicPlot$resolution,
-                norm = norm,
-                zrange = hicPlot$zrange
-            ))
+            
+            if (!is.null(hicPlot$chromstart) & !is.null(hicPlot$chromend) &
+                !is.na(hicPlot$resolution)){
+                
+                readchromstart <- hicPlot$chromstart - hicPlot$resolution
+                readchromend <- hicPlot$chromend + hicPlot$resolution
+                readaltchromstart <- hicPlot$altchromstart - hicPlot$resolution
+                readaltchromend <- hicPlot$altchromend + hicPlot$resolution
+
+                # .(m)cool file 
+                hic <- suppressWarnings(readCool(
+                    file = hic, chrom = hicPlot$chrom,
+                    chromstart = readchromstart,
+                    chromend = readchromend,
+                    altchrom = hicPlot$altchrom,
+                    altchromstart = readaltchromstart,
+                    altchromend = readaltchromend,
+                    resolution = hicPlot$resolution,
+                    norm = norm,
+                    zrange = hicPlot$zrange
+                ))
+                
+            } else {
+                hic <- data.frame(matrix(nrow = 0, ncol = 3))
+            }
         }
         
     } else {

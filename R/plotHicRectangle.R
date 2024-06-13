@@ -362,8 +362,10 @@ plotHicRectangle <- function(data, resolution = "auto", zrange = NULL,
     )
 
     hicPlot$chromstart <- adjRegion[[1]]
+    hicPlot$altchromstart <- adjRegion[[1]]
     hicPlot$chromend <- adjRegion[[2]]
-
+    hicPlot$altchromend <- adjRegion[[2]]
+    
     # =========================================================================
     # READ IN DATA
     # =========================================================================
