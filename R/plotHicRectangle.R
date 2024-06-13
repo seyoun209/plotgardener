@@ -28,7 +28,7 @@
 #' @param data Path to .hic or .(m)cool file as a string or a 3-column 
 #' dataframe of interaction counts in sparse upper triangular format.
 #' @param resolution A numeric specifying the width in basepairs
-#' of each pixel. For hic files, "auto" will attempt to choose a
+#' of each pixel. For files, "auto" will attempt to choose a
 #' resolution based on the size of the region. For
 #' dataframes, "auto" will attempt to detect the resolution the
 #' dataframe contains.
@@ -36,9 +36,11 @@
 #' interaction scores to plot, where extreme values will be set to the
 #' max or min.
 #' @param norm Character value specifying hic data normalization method,
-#' if giving .hic file. This value must be found in the .hic file.
+#' if giving .hic or .(m)cool file. This value must be found in the .hic 
+#' or .(m)cool file.
 #' Default value is \code{norm = "KR"}.
-#' @param matrix Character value indicating the type of matrix to output.
+#' @param matrix Character value indicating the type of matrix to output for 
+#' .hic files.
 #' Default value is \code{matrix = "observed"}. Options are:
 #' \itemize{
 #' \item{\code{"observed"}: }{Observed counts.}
