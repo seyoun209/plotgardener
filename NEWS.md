@@ -1,3 +1,15 @@
+# VERSION 1.11.2
+## NEW FEATURES
+
+* `plotgardener` now supports .(m)cool files for Hi-C data! Functions for 
+reading and extracting features from .(m)cool files include:
+    - `readCool`
+    - `readCoolBpResolutions`
+    - `readCoolNorms`
+    - `readCoolChroms` 
+  .(m)cool files can now be used with any Hi-C plotting function in place of
+  .hic files or other data types.
+
 # VERSION 1.11.1
 ## BUG FIXES
 
