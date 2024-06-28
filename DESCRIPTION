@@ -2,30 +2,11 @@ Package: plotgardener
 Title: Coordinate-Based Genomic Visualization Package for R
 Version: 1.10.1
 Date: 2024-06-10
-Authors@R: c(person("Nicole", "Kramer", 
-             email = "nekramer@live.unc.edu", 
-             role = c("aut", "cre"),
-             comment = c(ORCID = "0000-0001-9617-9671")),
-             person(c("Eric", "S."), "Davis", 
-             email = "esdavis@live.unc.edu", 
-             role = c("aut"),
-             comment = c(ORCID = "0000-0003-4051-3217")),
-             person("Craig", "Wenger", 
-             email = "craig.wenger@gmail.com", 
-             role = c("aut"),
-             comment = c(ORCID = "0000-0002-7361-8456")),
-             person("Sarah", "Parker", 
-             email = "sarmae@live.unc.edu", 
-             role = c("ctb")),
-             person("Erika", "Deoudes", 
-             email = "ed@erikadudes.com", 
-             role = c("art")),
-             person("Michael", "Love", 
-             email = "milove@email.unc.edu", 
-             role = c("ctb")),
-             person(c("Douglas", "H."), "Phanstiel", 
-             email = "douglas_phanstiel@med.unc.edu", 
-             role = c("aut", "cph")))
+Author: Nicole Kramer [aut, cre], Eric S. Davis [aut], Craig Wenger [aut],
+    Sarah Parker [ctb], Erika Deoudes [art], Michael Love [ctb],
+    Douglas H. Phanstiel [aut, cre, cph]
+Maintainer: Nicole Kramer <nekramer27@gmail.com>,
+            Douglas Phanstiel <douglas_phanstiel@med.unc.edu>
 Description: 
     Coordinate-based genomic visualization package for R. It grants users
     the ability to programmatically produce complex, multi-paneled figures. Tailored for
